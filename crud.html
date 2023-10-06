@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Shopping Cart</title>
+    <title>Kedai</title>
     <script src="https://unpkg.com/vue@3.0.11/dist/vue.global.prod.js"></script>
     <link rel="stylesheet" href="dist/output.css" />
     <script src="https://cdn.tailwindcss.com"></script>
@@ -86,9 +86,12 @@
           <p class="text-center font-bold text-gray-400 text-md">Menerima Jasa Catering : +628776452098</p>
         </div>
         <!-- seacrh -->
-        <div class="flex">
-          <input type="text" v-model="searching" placeholder="Cari Menu..." class="px-7 py-1 rounded border border-gray-300 mb-4 " />
-        </div>
+        <input
+          type="text"
+          v-model="searchQuery"
+          placeholder="Cari menu..."
+          class="px-2 py-1 rounded border border-gray-300 mb-5"
+          />
         <!-- end search -->
         <div class="flex space-x-4 ">
           <div class="w-2/3 px-10 border-[2px] rounded-lg shadow-md p-4">
@@ -250,26 +253,10 @@
             diskonKode: "",
             diskonJumlah: 0,
             prosesPesan: false,
-            searching:" ",
+            searchQuery: "",
           };
         },
         computed: {
-          searchingProduct() {
-            return this.products.filter((product) =>
-              product.name.toLowerCase().includes(this.searching.toLowerCase())
-            );
-          },
-
-          searchingProduct(){
-            return this.products.filter((product) =>
-            product.name.toLowerCase().includes(this.searching.toLowerCase()));
-          },
-
-          searchingMinuman(){
-            return this.products.filter((minuman) =>
-            minuman.name.toLowerCase().includes(this.searching.toLowerCase()));
-          },
-
           total() {
             return this.cart.reduce(
               (total, item) => total + item.price * item.jumlah,
