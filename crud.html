@@ -85,14 +85,6 @@
           <img src="img/keluarga.png" alt="" class="h-[150px] w-[150px] items-center mx-auto">
           <p class="text-center font-bold text-gray-400 text-md">Menerima Jasa Catering : +628776452098</p>
         </div>
-        <!-- seacrh -->
-        <input
-          type="text"
-          v-model="searchQuery"
-          placeholder="Cari menu..."
-          class="px-2 py-1 rounded border border-gray-300 mb-5"
-          />
-        <!-- end search -->
         <div class="flex space-x-4 ">
           <div class="w-2/3 px-10 border-[2px] rounded-lg shadow-md p-4">
             <h2 class="text-xl font-semibold mb-5 text-tulisan">MENU</h2>
@@ -230,8 +222,8 @@
               </button>
             </div>
           </div>  
-      </div>
       <!-- end cart -->
+        </div>
     </section>
 
     <script>
@@ -239,21 +231,21 @@
         data() {
           return {
             products: [
-              { name: "Mie Pedas", price: 8000, image: "img/mie.jpg" },
-              { name: "Ayam", price: 12000, image: "img/ayam.jpg" },
-              { name: "Capcay", price: 20000, image: "img/capcay.jpg" },
-              { name: "Bihun", price: 10000, image: "img/bihun.jpg" },
-              { name: "Bakso", price: 12000, image: "img/bakso.jpg" },
+              {id: 1, name: "Mie Pedas", price: 8000, image: "img/mie.jpg" },
+              { id:2, name: "Ayam", price: 12000, image: "img/ayam.jpg" },
+              { id:3, name: "Capcay", price: 20000, image: "img/capcay.jpg" },
+              { id:4,name: "Bihun", price: 10000, image: "img/bihun.jpg" },
+              { id:5,name: "Bakso", price: 12000, image: "img/bakso.jpg" },
             ],
             minuman: [
               { name: "Juice", price: 7000, image: "img/jus.jpg" },
               { name: "Air Mineral", price: 5000, image: "img/air.jpg" },
             ],
             cart: [],
-            diskonKode: "",
-            diskonJumlah: 0,
-            prosesPesan: false,
-            searchQuery: "",
+          diskonKode: "",
+          diskonJumlah: 0,
+          prosesPesan: false,
+          searchKeyword: '',
           };
         },
         computed: {
@@ -266,6 +258,11 @@
           totalSetelahDiskon() {
             return this.total - this.diskonJumlah;
           },
+        },
+        searchingProduct() {
+          return this.products.filter((product) =>
+            product.name.toLowerCase().includes(this.searching.toLowerCase())
+          );
         },
         methods: {
           pakaiDiskon() {
