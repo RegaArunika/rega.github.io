@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shopping Cart</title>
+    <script src="https://unpkg.com/vue@3.0.11/dist/vue.global.prod.js"></script>
+    <link rel="stylesheet" href="dist/output.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="shortcut icon" href="img/Vector .svg" />
+  </head>
+  <body>
+    <!-- navbar -->
+    <header
+      class="bg-transparent absolute top-0 left-0 w-full flex items-center z-10"
+    >
+      <div class="container">
+        <div class="flex items-center justify-between relative">
+          <div class="px-4">
+            <a
+              href="index.html"
+              class="font-bold text-primary text-lg lg:text-[30px] flex py-6 px-4"
+            >
+              <img src="img/Vector .svg" alt=""
+             /> <h2 class="px-4">Rega Arunika</h2></a>
+          </div>
+          <div class="flex items-center px-4">
+            <button
+              id="hamburger"
+              name="hamburger"
+              type="button"
+              class="block absolute right-4 lg:hidden"
+            >
+              <span
+                class="hamburger-line transition-duration-300 ease-in-out origin-top-left"
+              ></span>
+              <span
+                class="hamburger-line transition-duration-300 ease-in-out"
+              ></span>
+              <span
+                class="hamburger-line transition-duration-300 ease-in-out origin-bottom-left"
+              ></span>
+            </button>
+
+            <nav
+              id="nav-menu"
+              class="hidden absolute py-5 bg-white shadow-lg rounded-lg max-w-[250px] w-full top-full right-4 lg:block lg:static lg:bg-transparent lg:max-w-full lg:shadow-none lg:rounded-none"
+            >
+              <ul class="block lg:flex">
+                <li class="group">
+                  <a
+                    href="index.html"
+                    class="text-base text-black py-2 mx-8 flex group-hover:text-primary lg:text-[20px]"
+                    >Home</a
+                  >
+                </li>
+                <li class="group">
+                  <a
+                    href="crud.html"
+                    class="text-base text-black py-2 mx-8 flex group-hover:text-primary lg:text-[20px]"
+                    >Kedai</a
+                  >
+                </li>
+                <li class="group">
+                  <a
+                    href="mailto::regawp55@gmail.com"
+                    class="text-base text-black py-2 mx-8 flex group-hover:text-primary lg:rounded-xl lg:bg-primary lg:text-white lg:group-hover:text-white lg:text-[20px] lg:py-2 lg:px-4"
+                    >contact</a
+                  >
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </header>
+<!-- end navbar -->
+
+<!-- menu -->
+    <section class="pt-36">
+      <div id="app" class="p-4 ">
+        <div class="block mb-7">
+          <h1 class="text-3xl font-bold mb-6 text-center text-primary">Selamat Datang Di Kedai Kami!<br> Makanan & Minuman Yang Lezat dan Bikin Perut Kenyang <br>
+            <span class="text-tulisan text-sm">Gunakan Kode :"enak" untuk mendapatkan potongan 10% </span></h1>
+          <img src="img/keluarga.png" alt="" class="h-[150px] w-[150px] items-center mx-auto">
+          <p class="text-center font-bold text-gray-400 text-md">Menerima Jasa Catering : +628776452098</p>
+        </div>
+        <!-- seacrh -->
+        <div class="flex">
+          <input type="text" v-model="searching" placeholder="Cari Menu..." class="px-7 py-1 rounded border border-gray-300 mb-4 " />
+        </div>
+        <!-- end search -->
+        <div class="flex space-x-4 ">
+          <div class="w-2/3 px-10 border-[2px] rounded-lg shadow-md p-4">
+            <h2 class="text-xl font-semibold mb-5 text-tulisan">MENU</h2>
+            <!-- makanan -->
+            <h4 class="text-base mb-3">-- Makanan</h4>
+            <ul class=" block lg:flex space-x-10">
+              <li
+                v-for="(product, index) in products"
+                :key="index"
+                class="items-center space-x-2 mb-5"
+              >
+                <img
+                  :src="product.image"
+                  alt="Product Image"
+                  class="w-20 h-20 mx-auto block"
+                />
+                <div class="mb-3  border rounded-lg shadow-md p-4">
+                  <p class="font-semibold text-center">{{ product.name }}</p>
+                  <p class="text-gray-600">Rp.{{ product.price }}</p>
+                  <button
+                  @click="tambahCart(product)"
+                  class="px-2 py-1 bg-primary text-white rounded text-[12px]"
+                >
+                  Tambahkan
+                </button>
+                </div>
+              </li>
+            </ul>
+            <!-- minuman -->
+            <h4 class="text-base mb-3">-- Minuman</h4>
+            <ul class="block lg:flex space-x-10">
+              <li
+                v-for="(product, index) in minuman"
+                :key="index"
+                class="items-center space-x-2 mb-5"
+              >
+                <img
+                  :src="product.image"
+                  alt="Product Image"
+                  class="w-20 h-20 mx-auto block"
+                />
+                <div class="mb-3 border rounded-lg shadow-md p-4">
+                  <p class="font-semibold text-center">{{ product.name }}</p>
+                  <p class="text-gray-600">Rp.{{ product.price }}</p>
+                  <button
+                  @click="tambahCart(product)"
+                  class="px-2 py-1 bg-primary text-white rounded text-[12px]"
+                >
+                  Tambahkan
+                </button>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <!-- end menu -->
+
+          <!-- cart -->
+          <div class="lg:w-1/2 border-[2px] rounded-lg shadow-md p-4">
+            <h2 class="text-xl font-semibold text-tulisan mb-5 px-4">
+              Keranjang Saya
+            </h2>
+            <ul>
+              <li
+                v-for="(item, index) in cart"
+                :key="index"
+                class="flex items-center space-x-2 mb-5 px-4 border rounded-lg shadow-md p-4"
+              >
+                <img :src="item.image" alt="Product Image" class="w-12 h-12" />
+                <div>
+                  <p class="font-semibold">{{ item.name }}</p>
+                  <p class="text-gray-600">Rp.{{ item.price }}</p>
+                </div>
+                <span class="flex space-x-2 w-full justify-end">
+                  <button
+                    @click="kurangPesanan(index)"
+                    class="px-2 py-1 bg-yellow-500 text-white rounded"
+                  >
+                    <img
+                      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAGtJREFUSEvt1VEKwCAMA9DkZtvJ580q+LGPoTLRTAbxAE37rEhsOtyUCwd/Jm9qU8sEvFwy2mfhJnVEHCu6IJlqdXrBF4DZ8ETy/E3w7LRl0GHqFffbq+F3rBa+65va1DIBL5eM9vV/rO4gA/SWEh9gkkBEAAAAAElFTkSuQmCC"
+                      class="h-5 w-5"
+                    />
+                  </button>
+                  <span class="text-gray-700">{{ item.jumlah }}</span>
+                  <button
+                    @click="tambahPesanan(index)"
+                    class="px-2 py-1 bg-yellow-500 text-white rounded"
+                  >
+                    <img
+                      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAKlJREFUSEvtlesJwzAMhO82ySjJKJ0kdJKOkoySTS4YTKFguWreJdJfG5/96U4mTiqepIsQPoz8f6GW1AB4ZTxPkuOvqBa9WFILYMhiXQh7sAdqDyXsaq4cmRSbUiVX93nhAWCybmw53uyxpBSXJLCmRpJd6YBLCtde+zG5AFiTayJZbEPEyWWkXeNUu0EIH/0tvieXFZlauxbFyeXAL5tCeAuKrjPuh3oGaqJdHxUxwBEAAAAASUVORK5CYII="
+                      class="h-5 w-5"
+                    />
+                  </button>
+                  <button
+                    @click="hapusDariCart(index)"
+                    class="px-2 py-1 bg-red-500 text-white rounded"
+                  >
+                    <img
+                      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAOdJREFUSEvtltENwjAMRO8moWxCN6GTwCZ0E7oJZRIjS02VIlw74iMgJb9x8uyz0x5RabESF2GwiHQAzk6iE8kpUkwILCK3ADTxRpKDB4+Cxbso259JHr14FywiJwD35aLekjIalxL6DbAxQIesvyOApyGjF6e9nz9W/CaX16bS/U2bNlJXA+cliIgOlA6Wvs2+pLzIWXO4IoetZCJnG3hVLyJXkzopEFGrDVcbrvbJDP0r/vY5XQFcQiXaQabj3PuAqI9+fAFWm6OuY7U7+V27Zm/xYDrZmkTRIqmKmct1mUW0guBq4Bdr0dsfs0864AAAAABJRU5ErkJggg=="
+                      class="w-5 h-5"
+                    />
+                  </button>
+                </span>
+              </li>
+            </ul>
+            <div v-if="prosesPesan" class="mb-3">
+              <img src="img/masak.png" alt="proses" class="h-[150px] w-[150px] mx-auto items-center" />
+              <p class="text-center text-gray-600">Mohon Di Tunggu</p>
+              <p class="text-center text-gray-600">Pesanan Sedang diproses......</p>
+            </div>
+            <div class="mt-4 px-4">
+              <p class="text-md text-gray-600 font-semibold" >
+                Total: Rp.{{ total }}
+              </p>
+            </div>
+            <div class="mt-4 px-4">
+              <label for="diskonKode" class="text-md text-gray-600 font-semibold" v-if="cart.length > 0">Kode Diskon:</label>
+              <input type="text" id="diskonKode" v-model="diskonKode" class="px-2 py-1 rounded border border-gray-300" v-if="cart.length > 0"/>
+              <button @click="pakaiDiskon" class="px-2 py-1 bg-primary text-white rounded text-[16px] ml-2 " v-if="cart.length > 0">
+                Pakai Diskon
+              </button>
+              <p v-if="cart.length > 0" class="text-md text-gray-600 font-semibold">Potongan Harga: Rp.{{ diskonJumlah }}</p>
+            </div>
+            <div class="mt-4 px-4 text-md text-gray-600 font-semibold" v-if="cart.length > 0">Total Seletah Diskon : Rp.{{ totalSetelahDiskon }}</div>
+            
+            <div class="mt-4 text-center">
+              <button
+                @click="pesan(index)"
+                class="px-2 py-1 bg-primary text-white rounded text-[16px] mx-auto flex"
+              >
+                <img
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAgxJREFUSEvFVctOwkAUnTskuIJiAp2WFSz9Arfoj6gbjH+gK3Wlf2B0I/6IuPULXMpKOsVECitZzDVD2mYY+5hRCJOQNOH2nnvOnHMLZEsHtoRLtg/8NR53CCHytzy7vv+ySTVSxhHnV4SQSxVMCNHd9f3RJgYoBEbEl4bnHWwUWJWaUtpL2G+Kdaa55BCU0mF85wOHsZN1s851dcT5IyHkWAIKIdYh90j1Sy7w13jci1mvjawkkKSlMMcR5+9qxP47AQCc1F13IPuUAasRGwghnmzBKaVHyZU5jKV4pZsrYf2XaMUmlarJc+0wJoksjwlwyto2WupSUmU2AtZMtjJ1meyKR0YOY121vpSxLJ4GwRAA5FKR0TJao0UyGzGWRbMwPEZEmWuiS5bHWpU5a1gjxrK5rckizjEe6pfMxoxjYNVkhZusUql0EoV0Nxu7OinU9neZr9L/1examyt5IeubXTRBkR+M71hhvnS3wVn5KOj11sDTIOhTgMY3pXetVmuuN5xMJrUdIc4E4rTheQ95A1oBz4LgBgHO41gN6657qDeeheEzIi7NB4i3dc+7yAK3A1aaEkLQYYzqTSPORbKKASBzOKs4xRusDwD38hkRHxqed6oDT4PgHgD6cc1pntxWjGWz+cfHnqhW606z+Zq7tT4/9+liMau1229ruWMDJxuXWDM27lxSuDXgHxlD8R96bBmBAAAAAElFTkSuQmCC"
+                  class="h-6 w-6 mr-2"
+                />
+                Pesan
+              </button>
+            </div>
+          </div>  
+      </div>
+      <!-- end cart -->
+    </section>
+
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            products: [
+              { name: "Mie Pedas", price: 8000, image: "img/mie.jpg" },
+              { name: "Ayam", price: 12000, image: "img/ayam.jpg" },
+              { name: "Capcay", price: 20000, image: "img/capcay.jpg" },
+              { name: "Bihun", price: 10000, image: "img/bihun.jpg" },
+              { name: "Bakso", price: 12000, image: "img/bakso.jpg" },
+            ],
+            minuman: [
+              { name: "Juice", price: 7000, image: "img/jus.jpg" },
+              { name: "Air Mineral", price: 5000, image: "img/air.jpg" },
+            ],
+            cart: [],
+            diskonKode: "",
+            diskonJumlah: 0,
+            prosesPesan: false,
+            searching:" ",
+          };
+        },
+        computed: {
+          searchingProduct() {
+            return this.products.filter((product) =>
+              product.name.toLowerCase().includes(this.searching.toLowerCase())
+            );
+          },
+
+          searchingProduct(){
+            return this.products.filter((product) =>
+            product.name.toLowerCase().includes(this.searching.toLowerCase()));
+          },
+
+          searchingMinuman(){
+            return this.products.filter((minuman) =>
+            minuman.name.toLowerCase().includes(this.searching.toLowerCase()));
+          },
+
+          total() {
+            return this.cart.reduce(
+              (total, item) => total + item.price * item.jumlah,
+              0
+            );
+          },
+          totalSetelahDiskon() {
+            return this.total - this.diskonJumlah;
+          },
+        },
+        methods: {
+          pakaiDiskon() {
+            if (this.diskonKode === "enak") {
+              this.diskonJumlah = this.total * 0.1;
+            } else {
+              this.diskonJumlah = 0;
+            }
+          },
+          tambahCart(product) {
+            const existingItem = this.cart.find(
+              (item) => item.name === product.name
+            );
+            if (existingItem) {
+              existingItem.jumlah++;
+            } else {
+              this.cart.push({ ...product, jumlah: 1 });
+            }
+          },
+          hapusDariCart(index) {
+            this.cart.splice(index, 1);
+          },
+          kurangPesanan(index) {
+            if (this.cart[index].jumlah > 1) {
+              this.cart[index].jumlah--;
+            } else {
+              this.hapusDariCart(index);
+            }
+          },
+          tambahPesanan(index) {
+            if (this.cart[index].jumlah >= 1) {
+              this.cart[index].jumlah++;
+            }
+          },
+          pesan(index) {
+            this.prosesPesan = true;
+            setTimeout(() => {
+              this.cart = [];
+              this.prosesPesan = false;
+            }, 3000);
+          },
+        },
+      });
+      app.mount("#app");
+    </script>
+
+    <script src="script.js"></script>
+  </body>
+</html>
